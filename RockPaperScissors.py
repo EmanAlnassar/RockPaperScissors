@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import random
+import time
 
 """This program plays a game of Rock, Paper, Scissors between two Players,
 and reports both Player's scores each round."""
@@ -7,6 +9,21 @@ moves = ['rock', 'paper', 'scissors']
 
 """The Player class is the parent class for all of the Players
 in this game"""
+
+
+def print_pause(S):
+    print(S)
+    time.sleep(1)
+
+
+def intro():
+    print("\n------------------------\n")
+    print("ROCK-PAPER-SCISSORS GAME")
+    print('\n------------------------\n')
+    print_pause("WELCOME TO THE GAME!!\n")
+    print_pause("*** You will play against 4 different")
+    print_pause("artificial players, and you will play")
+    print_pause("with each one a game of 3 rounds ***\n")
 
 
 class Player:
@@ -139,5 +156,15 @@ class Game:
 
 
 if __name__ == '__main__':
-    game = Game(Player(), Player())
-    game.play_game()
+
+    computer_players = [Player('MonoMove'), RandomPlayer('CasualCommander'),
+                        ReflectPlayer('CopyCat'), CyclePlayer('OverOrbit')]
+
+    intro()
+    User = HumanPlayer()
+    while True:
+        for player in computer_players:
+            User.points = 0
+            game = Game(User, player)
+            game.play_game()
+        game.playing_again()
