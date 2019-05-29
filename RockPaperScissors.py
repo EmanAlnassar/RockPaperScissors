@@ -30,6 +30,7 @@ class Player:
     def __init__(self, name):
         self.name = name
         self.points = 0
+        # players points will be summed and return under this variable.
 
     def move(self):
         return 'rock'
@@ -39,6 +40,7 @@ class Player:
 
 
 class RandomPlayer(Player):
+    # This player takes the random module to play his move.
     def __init__(self, name):
         super().__init__(name)
 
@@ -51,12 +53,20 @@ class RandomPlayer(Player):
 
 
 class HumanPlayer(Player):
+    # The only real player.
     def __init__(self):
+        # Taking the user's name to make the game more personalized.
         self.name = input("PlEASE TYPE YOUR NAME TO START THE GAME?\n")
         self.points = 0
 
     def move(self):
+        # He takes his move via an input of the user's keyboard.
+        # lower() is a string method which turned all characters to lowercase.
         move = input("Type your move (Rock, Paper, Scissors)?\n").lower()
+        # Theis lines check the user input which,
+        # it has to be right and spelled correctly.
+        # if the user input wrong or incorrect,
+        # the user will try again until he writes it correctly.
         while move not in moves:
             print("invalid input! \n")
             return self.move()
@@ -68,27 +78,42 @@ class HumanPlayer(Player):
 
 
 class ReflectPlayer(Player):
+    # This player learn the other player moves,
+    # Then he returned it as his move.
     def __init__(self, name):
+        # This lines to call the __init__ in the parent class.
         super().__init__(name)
+        # For the first move, he will play randomly,
+        # until he learn his opponents move.
         self.their_move = random.choice(moves)
 
     def move(self):
+        # This function to return the other player move.
         return self.their_move
 
     def learn(self, my_move, their_move):
+        # This function teach the player his opponents move.
         self.my_move = my_move
         self.their_move = their_move
 
 
 class CyclePlayer(Player):
+    # This player takes his move by cycling over the game moves.
     def __init__(self, name):
+        # This lines to call the __init__ in the parent class.
         super().__init__(name)
+        # An index variable to help us looping over the moves list.
         self.index = 0
 
     def move(self):
+        # These lines make sure that the index value
+        # stays within the length of the moves list.
+        # So every time it reaches the moves list length, it will reset to 0.
         if self.index >= len(moves):
             self.index -= len(moves)
             return self.move()
+        # Here the code that loops over the moves list by an index,
+        # and increases it every time to move to the next string in the list.
         else:
             for move in range(len(moves)):
                 move = moves[self.index]
@@ -116,6 +141,8 @@ class Game:
         print(f"{self.p1.name}: {move1}  {self.p2.name}: {move2}")
         self.p1.learn(move1, move2)
         self.p2.learn(move2, move1)
+        # This code takes the players moves and adds points to the right move.
+        # Also, it's print who beats who.
         if beats(move1, move2) is True:
             print(f"{self.p1.name} beats {self.p2.name}")
             self.p1.points += 1
@@ -124,11 +151,13 @@ class Game:
             self.p2.points += 1
         elif move1 == move2:
             print("It is a tie")
+        # This line prints the points of the players.
         print(f"{self.p1.name}: {self.p1.points} points "
               f"{self.p2.name}: {self.p2.points} points\n")
         print("------------------------\n")
 
     def playing_again(self):
+        # This function take the user input to play again or to exit the game.
         playing_again = input("Would you like to play over?"
                               "(Type: Yes or NO) \n").lower()
         if 'yes' in playing_again:
@@ -145,6 +174,8 @@ class Game:
         for round in range(3):
             print(f"Round {round}:")
             self.play_round()
+        # The code below compares the players points to determinate the winner,
+        # and how many distinct points the winner has.
         if self.p1.points == self.p2.points:
             print("No winner!\n")
         elif self.p1.points > self.p2.points:
