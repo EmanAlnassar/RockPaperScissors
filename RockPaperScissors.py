@@ -78,6 +78,9 @@ class CyclePlayer(Player):
                 self.index += 1
                 return move
 
+    def learn(self, my_move, their_move):
+        pass
+
 
 def beats(one, two):
     return ((one == 'rock' and two == 'scissors') or
@@ -89,14 +92,24 @@ class Game:
     def __init__(self, p1, p2):
         self.p1 = p1
         self.p2 = p2
-        score = 0
 
     def play_round(self):
         move1 = self.p1.move()
         move2 = self.p2.move()
-        print(f"Player 1: {move1}  Player 2: {move2}")
+        print(f"{self.p1.name}: {move1}  {self.p2.name}: {move2}")
         self.p1.learn(move1, move2)
         self.p2.learn(move2, move1)
+        if beats(move1, move2) is True:
+            print(f"{self.p1.name} beats {self.p2.name}")
+            self.p1.points += 1
+        elif beats(move2, move1) is True:
+            print(f"{self.p2.name} beats {self.p1.name}")
+            self.p2.points += 1
+        elif move1 == move2:
+            print("It is a tie")
+        print(f"{self.p1.name}: {self.p1.points} points "
+              f"{self.p2.name}: {self.p2.points} points\n")
+        print("------------------------\n")
 
     def play_game(self):
         print("Game start!")
