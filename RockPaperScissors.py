@@ -10,11 +10,73 @@ in this game"""
 
 
 class Player:
+    def __init__(self, name):
+        self.name = name
+        self.points = 0
+
     def move(self):
         return 'rock'
 
     def learn(self, my_move, their_move):
         pass
+
+
+class RandomPlayer(Player):
+    def __init__(self, name):
+        super().__init__(name)
+
+    def move(self):
+        move = random.choice(moves)
+        return move
+
+    def learn(self, my_move, their_move):
+        pass
+
+
+class HumanPlayer(Player):
+    def __init__(self):
+        self.name = input("PlEASE TYPE YOUR NAME TO START THE GAME?\n")
+        self.points = 0
+
+    def move(self):
+        move = input("Type your move (Rock, Paper, Scissors)?\n").lower()
+        while move not in moves:
+            print("invalid input! \n")
+            return self.move()
+        else:
+            return move
+
+    def learn(self, my_move, their_move):
+        pass
+
+
+class ReflectPlayer(Player):
+    def __init__(self, name):
+        super().__init__(name)
+        self.their_move = random.choice(moves)
+
+    def move(self):
+        return self.their_move
+
+    def learn(self, my_move, their_move):
+        self.my_move = my_move
+        self.their_move = their_move
+
+
+class CyclePlayer(Player):
+    def __init__(self, name):
+        super().__init__(name)
+        self.index = 0
+
+    def move(self):
+        if self.index >= len(moves):
+            self.index -= len(moves)
+            return self.move()
+        else:
+            for move in range(len(moves)):
+                move = moves[self.index]
+                self.index += 1
+                return move
 
 
 def beats(one, two):
