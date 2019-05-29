@@ -111,12 +111,31 @@ class Game:
               f"{self.p2.name}: {self.p2.points} points\n")
         print("------------------------\n")
 
+    def playing_again(self):
+        playing_again = input("Would you like to play over?"
+                              "(Type: Yes or NO) \n").lower()
+        if 'yes' in playing_again:
+            return
+        elif 'no' in playing_again:
+            print("Game over!")
+            return exit()
+        else:
+            self.playing_again()
+
     def play_game(self):
+        print(f"Player 1: {self.p1.name} VS. Player 2: {self.p2.name}\n")
         print("Game start!")
         for round in range(3):
             print(f"Round {round}:")
             self.play_round()
-        print("Game over!")
+        if self.p1.points == self.p2.points:
+            print("No winner!\n")
+        elif self.p1.points > self.p2.points:
+            print(f"{self.p1.name} is the WINNER"
+                  f"by {self.p1.points - self.p2.points} points\n")
+        elif self.p2.points > self.p1.points:
+            print(f"{self.p2.name} is the WINNER"
+                  f"by {self.p2.points - self.p1.points} points\n")
 
 
 if __name__ == '__main__':
